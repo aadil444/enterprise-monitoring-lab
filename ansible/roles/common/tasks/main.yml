@@ -29,3 +29,31 @@
     state: started
   tags:
     - services
+
+- name: Ensure system timezone is configured
+  ansible.builtin.timezone:
+    name: "{{ timezone }}"
+  tags:
+    - timezone
+
+- name: Gather system facts
+  ansible.builtin.setup:
+  tags:
+    - facts
+
+- name: Display hostname
+  ansible.builtin.debug:
+    msg: "Configuring {{ inventory_hostname }}"
+  tags:
+    - debug
+
+- name: Configure /etc/hosts
+  ansible.builtin.template:
+    src: hosts.j2
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: "0644"
+    backup: true
+  tags:
+    - hosts

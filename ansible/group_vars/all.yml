@@ -1,0 +1,17 @@
+---
+timezone: Asia/Karachi
+
+common_packages:
+  - vim
+  - git
+  - wget
+  - curl
+  - unzip
+  - tar
+  - tree
+  - rsync
+  - chrony
+  - firewalld
+  - net-tools
+  - bind-utils
+  - bash-completion
