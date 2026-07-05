@@ -1,0 +1,31 @@
+---
+- name: Update all packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+  tags:
+    - update
+
+- name: Install common packages
+  ansible.builtin.dnf:
+    name: "{{ common_packages }}"
+    state: present
+  tags:
+    - packages
+
+- name: Ensure chronyd service is enabled and running
+  ansible.builtin.service:
+    name: chronyd
+    enabled: true
+    state: started
+  tags:
+    - services
+
+- name: Ensure firewalld service is enabled and running
+  ansible.builtin.service:
+    name: firewalld
+    enabled: true
+    state: started
+  tags:
+    - services

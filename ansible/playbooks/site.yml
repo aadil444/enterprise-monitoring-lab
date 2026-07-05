@@ -1,0 +1,5 @@
+---
+- import_playbook: 01-common.yml
+#- import_playbook: 02-postgresql.yml
+#- import_playbook: 03-build-tools.yml
+#- import_playbook: 04-zabbix.yml
