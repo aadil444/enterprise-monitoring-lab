@@ -1,0 +1,35 @@
+# Python
+*.pyc
+__pycache__/
+
+# Ansible retry files
+*.retry
+
+# Logs
+*.log
+
+# Vim
+*.swp
+
+# VS Code
+.vscode/
+
+# IntelliJ
+.idea/
+
+# macOS
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+
+# Build artifacts
+build/
+dist/
+
+# Secrets
+*.pem
+*.key
+*.crt
+.env
