@@ -1,7 +1,4 @@
 ---
-# defaults file for roles/postgresql
-postgresql_version: 17
-
 postgresql_database: zabbix
 
 postgresql_user: zabbix
