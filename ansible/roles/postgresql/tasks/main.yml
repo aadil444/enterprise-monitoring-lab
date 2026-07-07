@@ -49,3 +49,19 @@
     state: present
   tags:
     - packages
+
+- name: Initialize PostgreSQL database
+  ansible.builtin.command:
+    cmd: /usr/pgsql-{{ postgresql_version }}/bin/postgresql-{{ postgresql_version }}-setup initdb
+    creates: /var/lib/pgsql/{{ postgresql_version }}/data/PG_VERSION
+  tags:
+    - init
+
+
+- name: Enable and start PostgreSQL service
+  ansible.builtin.service:
+    name: "{{ postgresql_service }}"
+    enabled: true
+    state: started
+  tags:
+    - service    
