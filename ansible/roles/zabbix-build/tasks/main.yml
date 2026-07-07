@@ -1,2 +1,8 @@
 ---
 # tasks file for roles/zabbix-build
+- name: Install Zabbix build dependencies
+  ansible.builtin.dnf:
+    name: "{{ zabbix_build_packages }}"
+    state: present
+  tags:
+    - packages

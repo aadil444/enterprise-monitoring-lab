@@ -1,2 +1,35 @@
 ---
 # defaults file for roles/zabbix-build
+zabbix_build_packages:
+
+  - gcc
+  - gcc-c++
+  - make
+  - cmake
+  - git
+  - wget
+  - curl
+  - tar
+  - autoconf
+  - automake
+  - libtool
+
+  # PostgreSQL development
+  - libpq-devel
+
+  # Encryption
+  - openssl-devel
+
+  # Compression
+  - zlib-devel
+  - libxml2-devel
+  - libevent-devel
+
+  # SNMP
+  - net-snmp-devel
+
+  # LDAP
+  - openldap-devel
+
+  # PCRE
+  - pcre2-devel
