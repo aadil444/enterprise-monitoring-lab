@@ -1,18 +1,25 @@
 ---
 # tasks file for roles/postgresql
-# Create PostgreSQL Repository
-- name: Install PostgreSQL repository package
+- name: Download PostgreSQL repository RPM
+  ansible.builtin.get_url:
+    url: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    dest: /tmp/pgdg-redhat-repo-latest.noarch.rpm
+    mode: "0644"
+
+- name: Install PostgreSQL repository RPM
   ansible.builtin.dnf:
-    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    name: /tmp/pgdg-redhat-repo-latest.noarch.rpm
     state: present
 
-#Disable Rocky Default PostgreSQL Module
+- name: Refresh DNF metadata
+  ansible.builtin.dnf:
+    update_cache: true
+
 - name: Disable default PostgreSQL module
   ansible.builtin.command:
     cmd: dnf -qy module disable postgresql
   changed_when: false
 
-# Install PostgreSQL Packages
 - name: Install PostgreSQL packages
   ansible.builtin.dnf:
     name: "{{ postgresql_packages }}"
