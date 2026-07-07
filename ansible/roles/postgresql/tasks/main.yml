@@ -1,2 +1,19 @@
 ---
 # tasks file for roles/postgresql
+# Create PostgreSQL Repository
+- name: Install PostgreSQL repository package
+  ansible.builtin.dnf:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+#Disable Rocky Default PostgreSQL Module
+- name: Disable default PostgreSQL module
+  ansible.builtin.command:
+    cmd: dnf -qy module disable postgresql
+  changed_when: false
+
+# Install PostgreSQL Packages
+- name: Install PostgreSQL packages
+  ansible.builtin.dnf:
+    name: "{{ postgresql_packages }}"
+    state: present

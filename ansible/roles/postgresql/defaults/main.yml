@@ -2,10 +2,17 @@
 # defaults file for roles/postgresql
 postgresql_version: 17
 
+postgresql_packages:
+  - postgresql17-server
+  - postgresql17
+  - postgresql17-contrib
+
+postgresql_service: postgresql-17
+
+postgresql_port: 5432
+
 postgresql_database: zabbix
 
 postgresql_user: zabbix
 
 postgresql_password: ChangeMeLater
-
-postgresql_port: 5432
