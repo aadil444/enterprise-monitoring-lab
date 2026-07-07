@@ -1,0 +1,7 @@
+---
+- name: Prepare Zabbix Source Build Environment
+  hosts: monitoring
+  become: true
+
+  roles:
+    - zabbix-build
