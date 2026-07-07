@@ -64,4 +64,29 @@
     enabled: true
     state: started
   tags:
-    - service    
+    - service
+
+- name: Configure PostgreSQL server settings
+  ansible.builtin.template:
+    src: postgresql.conf.j2
+    dest: /var/lib/pgsql/{{ postgresql_version }}/data/postgresql.conf
+    owner: postgres
+    group: postgres
+    mode: "0600"
+  notify:
+    - Restart PostgreSQL
+  tags:
+    - config
+
+
+- name: Configure PostgreSQL client authentication
+  ansible.builtin.template:
+    src: pg_hba.conf.j2
+    dest: /var/lib/pgsql/{{ postgresql_version }}/data/pg_hba.conf
+    owner: postgres
+    group: postgres
+    mode: "0600"
+  notify:
+    - Restart PostgreSQL
+  tags:
+    - config    

@@ -6,3 +6,8 @@ postgresql_user: zabbix
 postgresql_password: ChangeMeLater
 
 postgresql_port: 5432
+
+postgresql_listen_addresses: "*"
+
+postgresql_allowed_hosts:
+  - 192.168.56.30
