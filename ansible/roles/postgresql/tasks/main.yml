@@ -9,19 +9,16 @@
   tags:
     - repo
 
-- name: Verify PostgreSQL repository RPM exists
-  ansible.builtin.stat:
-    path: /tmp/pgdg-redhat-repo-latest.noarch.rpm
-  register: pgdg_rpm
+- name: Verify PostgreSQL repository package is installed
+  ansible.builtin.package_facts:
+    manager: auto
   tags:
     - repo
 
-- name: Fail if PostgreSQL repository RPM is missing
+- name: Fail if PostgreSQL repository package is missing
   ansible.builtin.fail:
-    msg: "PostgreSQL repository RPM was not downloaded"
-  when:
-    - not ansible_check_mode
-    - not pgdg_rpm.stat.exists
+    msg: "PostgreSQL repository package is not installed"
+  when: "'pgdg-redhat-repo' not in ansible_facts.packages"
   tags:
     - repo
 
@@ -59,7 +56,6 @@
   tags:
     - init
 
-
 - name: Enable and start PostgreSQL service
   ansible.builtin.service:
     name: "{{ postgresql_service }}"
@@ -93,6 +89,16 @@
   tags:
     - config
 
+- name: Create Zabbix database
+  community.postgresql.postgresql_db:
+    name: "{{ postgresql_database }}"
+    state: present
+    encoding: UTF8
+    owner: "{{ postgresql_user }}"
+  become_user: postgres
+  tags:
+    - database
+
 - name: Install PostgreSQL Python dependency
   ansible.builtin.dnf:
     name:
@@ -101,14 +107,15 @@
   tags:
     - database
 
-- name: Create Zabbix database
-  community.postgresql.postgresql_db:
-    name: "{{ postgresql_database }}"
-    state: present
-    encoding: UTF8
-  become_user: postgres
+- name: Create Ansible temporary directory for postgres user
+  ansible.builtin.file:
+    path: /var/lib/pgsql/.ansible/tmp
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: "0700"
   tags:
-    - database
+    - database    
 
 - name: Create Zabbix database user
   community.postgresql.postgresql_user:
@@ -119,12 +126,19 @@
   tags:
     - database
 
-- name: Grant database privileges to Zabbix user
-  community.postgresql.postgresql_privs:
-    database: "{{ postgresql_database }}"
-    roles: "{{ postgresql_user }}"
-    type: database
-    privs: ALL
+- name: Set Zabbix database owner
+  community.postgresql.postgresql_db:
+    name: "{{ postgresql_database }}"
+    owner: "{{ postgresql_user }}"
+    state: present
   become_user: postgres
   tags:
-    - database        
+    - database     
+- name: Allow PostgreSQL port
+  ansible.posix.firewalld:
+    port: "{{ postgresql_port }}/tcp"
+    permanent: true
+    immediate: true
+    state: enabled
+  tags:
+    - firewall      
