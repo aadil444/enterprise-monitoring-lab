@@ -1,26 +1,51 @@
 ---
 # tasks file for roles/postgresql
+
 - name: Download PostgreSQL repository RPM
   ansible.builtin.get_url:
     url: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
     dest: /tmp/pgdg-redhat-repo-latest.noarch.rpm
     mode: "0644"
+  tags:
+    - repo
+
+- name: Verify PostgreSQL repository RPM exists
+  ansible.builtin.stat:
+    path: /tmp/pgdg-redhat-repo-latest.noarch.rpm
+  register: pgdg_rpm
+  tags:
+    - repo
+
+- name: Fail if PostgreSQL repository RPM is missing
+  ansible.builtin.fail:
+    msg: "PostgreSQL repository RPM was not downloaded"
+  when: not pgdg_rpm.stat.exists
+  tags:
+    - repo
 
 - name: Install PostgreSQL repository RPM
   ansible.builtin.dnf:
     name: /tmp/pgdg-redhat-repo-latest.noarch.rpm
     state: present
+  tags:
+    - repo
 
 - name: Refresh DNF metadata
   ansible.builtin.dnf:
     update_cache: true
+  tags:
+    - repo
 
 - name: Disable default PostgreSQL module
   ansible.builtin.command:
     cmd: dnf -qy module disable postgresql
   changed_when: false
+  tags:
+    - repo
 
 - name: Install PostgreSQL packages
   ansible.builtin.dnf:
     name: "{{ postgresql_packages }}"
     state: present
+  tags:
+    - packages
