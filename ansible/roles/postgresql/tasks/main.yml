@@ -19,7 +19,9 @@
 - name: Fail if PostgreSQL repository RPM is missing
   ansible.builtin.fail:
     msg: "PostgreSQL repository RPM was not downloaded"
-  when: not pgdg_rpm.stat.exists
+  when:
+    - not ansible_check_mode
+    - not pgdg_rpm.stat.exists
   tags:
     - repo
 
@@ -89,4 +91,40 @@
   notify:
     - Restart PostgreSQL
   tags:
-    - config    
+    - config
+
+- name: Install PostgreSQL Python dependency
+  ansible.builtin.dnf:
+    name:
+      - python3-psycopg2
+    state: present
+  tags:
+    - database
+
+- name: Create Zabbix database
+  community.postgresql.postgresql_db:
+    name: "{{ postgresql_database }}"
+    state: present
+    encoding: UTF8
+  become_user: postgres
+  tags:
+    - database
+
+- name: Create Zabbix database user
+  community.postgresql.postgresql_user:
+    name: "{{ postgresql_user }}"
+    password: "{{ postgresql_password }}"
+    state: present
+  become_user: postgres
+  tags:
+    - database
+
+- name: Grant database privileges to Zabbix user
+  community.postgresql.postgresql_privs:
+    database: "{{ postgresql_database }}"
+    roles: "{{ postgresql_user }}"
+    type: database
+    privs: ALL
+  become_user: postgres
+  tags:
+    - database        
