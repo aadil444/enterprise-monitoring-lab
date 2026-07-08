@@ -105,6 +105,14 @@
   tags:
     - service
 
+- name: Debug Zabbix database variables
+  ansible.builtin.debug:
+    msg:
+      - "DB Host: {{ zabbix_db_host }}"
+      - "DB Name: {{ zabbix_db_name }}"
+  tags:
+    - config    
+
 - name: Include Zabbix configuration tasks
   ansible.builtin.include_tasks:
     file: config.yml
