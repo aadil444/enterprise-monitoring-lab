@@ -25,30 +25,42 @@
 
 
 - name: Import Zabbix schema
-  community.postgresql.postgresql_script:
-    db: "{{ zabbix_db_name }}"
-    path: "{{ zabbix_source_path }}/database/postgresql/schema.sql"
-  become_user: postgres
-  delegate_to: "{{ zabbix_db_host }}"
+  ansible.builtin.shell:
+    cmd: |
+      psql \
+      -h {{ zabbix_db_host }} \
+      -U {{ zabbix_db_user }} \
+      -d {{ zabbix_db_name }} \
+      -f {{ zabbix_source_path }}/database/postgresql/schema.sql
+  environment:
+    PGPASSWORD: "{{ zabbix_db_password }}"
   tags:
     - database
 
 
 - name: Import Zabbix initial data
-  community.postgresql.postgresql_script:
-    db: "{{ zabbix_db_name }}"
-    path: "{{ zabbix_source_path }}/database/postgresql/data.sql"
-  become_user: postgres
-  delegate_to: "{{ zabbix_db_host }}"
+  ansible.builtin.shell:
+    cmd: |
+      psql \
+      -h {{ zabbix_db_host }} \
+      -U {{ zabbix_db_user }} \
+      -d {{ zabbix_db_name }} \
+      -f {{ zabbix_source_path }}/database/postgresql/data.sql
+  environment:
+    PGPASSWORD: "{{ zabbix_db_password }}"
   tags:
     - database
 
 
 - name: Import Zabbix images
-  community.postgresql.postgresql_script:
-    db: "{{ zabbix_db_name }}"
-    path: "{{ zabbix_source_path }}/database/postgresql/images.sql"
-  become_user: postgres
-  delegate_to: "{{ zabbix_db_host }}"
+  ansible.builtin.shell:
+    cmd: |
+      psql \
+      -h {{ zabbix_db_host }} \
+      -U {{ zabbix_db_user }} \
+      -d {{ zabbix_db_name }} \
+      -f {{ zabbix_source_path }}/database/postgresql/images.sql
+  environment:
+    PGPASSWORD: "{{ zabbix_db_password }}"
   tags:
     - database
