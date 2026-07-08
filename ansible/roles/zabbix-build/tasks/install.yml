@@ -1,0 +1,22 @@
+---
+- name: Install Zabbix binaries
+  ansible.builtin.command:
+    cmd: make install
+    chdir: "{{ zabbix_source_path }}"
+    creates: "{{ zabbix_install_prefix }}/sbin/zabbix_server"
+  tags:
+    - install
+
+- name: Create Zabbix runtime directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ zabbix_user }}"
+    group: "{{ zabbix_group }}"
+    mode: "0755"
+  loop:
+    - /etc/zabbix
+    - /var/log/zabbix
+    - /var/lib/zabbix
+  tags:
+    - install    

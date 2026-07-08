@@ -92,3 +92,9 @@
     file: make.yml
   tags:
     - make
+
+- name: Include Zabbix install tasks
+  ansible.builtin.include_tasks:
+    file: install.yml
+  tags:
+    - install    
