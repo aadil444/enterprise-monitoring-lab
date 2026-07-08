@@ -1,0 +1,17 @@
+---
+- name: Create Zabbix configuration files
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ zabbix_user }}"
+    group: "{{ zabbix_group }}"
+    mode: "0640"
+  loop:
+    - src: zabbix_server.conf.j2
+      dest: /etc/zabbix/zabbix_server.conf
+
+    - src: zabbix_agentd.conf.j2
+      dest: /etc/zabbix/zabbix_agentd.conf
+
+  tags:
+    - config

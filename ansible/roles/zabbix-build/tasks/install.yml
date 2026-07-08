@@ -19,4 +19,14 @@
     - /var/log/zabbix
     - /var/lib/zabbix
   tags:
-    - install    
+    - install
+
+- name: Create Zabbix run directory
+  ansible.builtin.file:
+    path: /run/zabbix
+    state: directory
+    owner: "{{ zabbix_user }}"
+    group: "{{ zabbix_group }}"
+    mode: "0755"
+  tags:
+    - install       

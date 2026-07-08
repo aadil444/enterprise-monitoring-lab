@@ -103,4 +103,10 @@
   ansible.builtin.include_tasks:
     file: service.yml
   tags:
-    - service       
+    - service
+
+- name: Include Zabbix configuration tasks
+  ansible.builtin.include_tasks:
+    file: config.yml
+  tags:
+    - config          
