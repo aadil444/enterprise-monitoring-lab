@@ -6,6 +6,7 @@
       --prefix={{ zabbix_install_prefix }}
       --enable-server
       --enable-agent
+      --enable-proxy
       --with-postgresql
       --with-net-snmp
       --with-libcurl

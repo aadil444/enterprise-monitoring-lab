@@ -17,12 +17,14 @@
   tags:
     - user
 
+
 - name: Install Zabbix build dependencies
   ansible.builtin.dnf:
     name: "{{ zabbix_build_packages }}"
     state: present
   tags:
     - packages
+
 
 - name: Create Zabbix source directory
   ansible.builtin.file:
@@ -34,6 +36,7 @@
   tags:
     - source
 
+
 - name: Clone Zabbix source code
   ansible.builtin.git:
     repo: https://github.com/zabbix/zabbix.git
@@ -42,6 +45,7 @@
     update: false
   tags:
     - source
+
 
 - name: Verify Zabbix source checkout
   ansible.builtin.stat:
@@ -58,30 +62,16 @@
   tags:
     - source
 
+
 - name: Set ownership on Zabbix source directory
   ansible.builtin.file:
     path: "{{ zabbix_source_path }}"
-    owner: "{{ zabbix_user }}"
-    group: "{{ zabbix_group }}"
+    owner: root
+    group: root
     recurse: true
   tags:
     - source
 
-- name: Configure Git safe directory for Zabbix source
-  ansible.builtin.command:
-    cmd: git config --global --add safe.directory "{{ zabbix_source_path }}"
-  become: false
-  tags:
-    - source    
-    
-- name: Install Zabbix bootstrap dependencies
-  ansible.builtin.dnf:
-    name:
-      - gettext
-      - gettext-devel
-    state: present
-  tags:
-    - packages 
 
 - name: Include Zabbix bootstrap tasks
   ansible.builtin.include_tasks:
@@ -101,4 +91,4 @@
   ansible.builtin.include_tasks:
     file: make.yml
   tags:
-    - make                 
+    - make
