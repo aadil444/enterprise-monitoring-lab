@@ -109,4 +109,10 @@
   ansible.builtin.include_tasks:
     file: config.yml
   tags:
-    - config          
+    - config    
+
+- name: Include Zabbix database tasks
+  ansible.builtin.include_tasks:
+    file: database.yml
+  tags:
+    - database          

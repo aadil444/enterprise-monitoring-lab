@@ -17,3 +17,5 @@ zabbix_db_password: ChangeMeLater
 zabbix_server_listen_port: 10051
 
 zabbix_agent_server: 192.168.56.30
+
+zabbix_schema_file: "{{ zabbix_source_path }}/database/postgresql/server.sql.gz"

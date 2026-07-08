@@ -1,0 +1,31 @@
+---
+- name: Verify Zabbix PostgreSQL schema exists
+  ansible.builtin.stat:
+    path: "{{ zabbix_schema_file }}"
+  register: zabbix_schema
+  tags:
+    - database
+
+
+- name: Fail if Zabbix PostgreSQL schema is missing
+  ansible.builtin.fail:
+    msg: "Zabbix PostgreSQL schema file not found"
+  when: not zabbix_schema.stat.exists
+  tags:
+    - database
+
+
+- name: Import Zabbix PostgreSQL schema
+  ansible.builtin.shell:
+    cmd: >
+      zcat {{ zabbix_schema_file }}
+      | psql
+      -h {{ zabbix_db_host }}
+      -U {{ zabbix_db_user }}
+      -d {{ zabbix_db_name }}
+  environment:
+    PGPASSWORD: "{{ zabbix_db_password }}"
+  args:
+    chdir: "{{ zabbix_source_path }}"
+  tags:
+    - database
