@@ -19,6 +19,7 @@
       --with-libcurl
       --with-libxml2
       --with-openssl
+      --with-libpcre2
     chdir: "{{ zabbix_source_path }}"
     creates: "{{ zabbix_source_path }}/config.status"
   tags:
