@@ -86,5 +86,8 @@
 - name: Include Zabbix compile tasks
   ansible.builtin.include_tasks:
     file: compile.yml
+    apply:
+      tags:
+        - compile
   tags:
-    - compile                   
+    - compile                  
