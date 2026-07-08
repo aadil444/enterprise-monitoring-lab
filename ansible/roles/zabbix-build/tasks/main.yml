@@ -81,4 +81,10 @@
       - gettext-devel
     state: present
   tags:
-    - packages                
+    - packages 
+
+- name: Include Zabbix compile tasks
+  ansible.builtin.include_tasks:
+    file: compile.yml
+  tags:
+    - compile                   
