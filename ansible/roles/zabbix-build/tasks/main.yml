@@ -66,6 +66,13 @@
     recurse: true
   tags:
     - source
+
+- name: Configure Git safe directory for Zabbix source
+  ansible.builtin.command:
+    cmd: git config --global --add safe.directory "{{ zabbix_source_path }}"
+  become: false
+  tags:
+    - source    
     
 - name: Install Zabbix bootstrap dependencies
   ansible.builtin.dnf:
