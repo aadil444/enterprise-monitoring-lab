@@ -1,30 +1,54 @@
 ---
-- name: Verify Zabbix PostgreSQL schema directory exists
+- name: Generate Zabbix database schema
+  ansible.builtin.command:
+    cmd: make dbschema
+    chdir: "{{ zabbix_source_path }}"
+    creates: "{{ zabbix_source_path }}/database/postgresql/schema.sql"
+  tags:
+    - database
+
+
+- name: Verify PostgreSQL schema file exists
   ansible.builtin.stat:
-    path: "{{ zabbix_schema_dir }}"
-  register: zabbix_schema_dir_check
+    path: "{{ zabbix_source_path }}/database/postgresql/schema.sql"
+  register: zabbix_schema
   tags:
     - database
 
 
-- name: Fail if PostgreSQL schema directory missing
+- name: Fail if PostgreSQL schema is missing
   ansible.builtin.fail:
-    msg: "Zabbix PostgreSQL schema directory not found"
-  when: not zabbix_schema_dir_check.stat.exists
+    msg: "Zabbix PostgreSQL schema was not generated"
+  when: not zabbix_schema.stat.exists
   tags:
     - database
 
 
-- name: Import Zabbix PostgreSQL schema
+- name: Import Zabbix schema
   community.postgresql.postgresql_script:
     db: "{{ zabbix_db_name }}"
-    path: "{{ zabbix_schema_dir }}/{{ item }}"
+    path: "{{ zabbix_source_path }}/database/postgresql/schema.sql"
   become_user: postgres
   delegate_to: "{{ zabbix_db_host }}"
-  loop:
-    - schema.sql
-    - images.sql
-    - data.sql
   tags:
     - database
-    
+
+
+- name: Import Zabbix initial data
+  community.postgresql.postgresql_script:
+    db: "{{ zabbix_db_name }}"
+    path: "{{ zabbix_source_path }}/database/postgresql/data.sql"
+  become_user: postgres
+  delegate_to: "{{ zabbix_db_host }}"
+  tags:
+    - database
+
+
+- name: Import Zabbix images
+  community.postgresql.postgresql_script:
+    db: "{{ zabbix_db_name }}"
+    path: "{{ zabbix_source_path }}/database/postgresql/images.sql"
+  become_user: postgres
+  delegate_to: "{{ zabbix_db_host }}"
+  tags:
+    - database
