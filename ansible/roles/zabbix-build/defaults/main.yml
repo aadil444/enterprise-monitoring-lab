@@ -32,3 +32,4 @@ zabbix_build_packages:
   - net-snmp-devel
   - openldap-devel
   - pcre2-devel
+  - libcurl-devel
