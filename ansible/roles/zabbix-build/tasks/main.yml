@@ -83,11 +83,22 @@
   tags:
     - packages 
 
-- name: Include Zabbix compile tasks
+- name: Include Zabbix bootstrap tasks
   ansible.builtin.include_tasks:
-    file: compile.yml
-    apply:
-      tags:
-        - compile
+    file: bootstrap.yml
   tags:
-    - compile                  
+    - bootstrap
+
+
+- name: Include Zabbix configure tasks
+  ansible.builtin.include_tasks:
+    file: configure.yml
+  tags:
+    - configure
+
+
+- name: Include Zabbix make tasks
+  ansible.builtin.include_tasks:
+    file: make.yml
+  tags:
+    - make                 
