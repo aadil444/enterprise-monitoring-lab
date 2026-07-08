@@ -10,3 +10,25 @@ zabbix_source_dir: /usr/local/src
 zabbix_source_path: "{{ zabbix_source_dir }}/zabbix-{{ zabbix_version }}"
 
 zabbix_install_prefix: /usr/local
+
+
+zabbix_build_packages:
+  - gcc
+  - gcc-c++
+  - make
+  - cmake
+  - git
+  - wget
+  - curl
+  - tar
+  - autoconf
+  - automake
+  - libtool
+  - libpq-devel
+  - openssl-devel
+  - zlib-devel
+  - libxml2-devel
+  - libevent-devel
+  - net-snmp-devel
+  - openldap-devel
+  - pcre2-devel
