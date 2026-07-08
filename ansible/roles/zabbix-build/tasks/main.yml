@@ -43,6 +43,21 @@
   tags:
     - source
 
+- name: Verify Zabbix source checkout
+  ansible.builtin.stat:
+    path: "{{ zabbix_source_path }}/configure.ac"
+  register: zabbix_source_check
+  tags:
+    - source
+
+
+- name: Fail if Zabbix source checkout is invalid
+  ansible.builtin.fail:
+    msg: "Zabbix source checkout is incomplete"
+  when: not zabbix_source_check.stat.exists
+  tags:
+    - source
+
 - name: Set ownership on Zabbix source directory
   ansible.builtin.file:
     path: "{{ zabbix_source_path }}"
@@ -50,4 +65,13 @@
     group: "{{ zabbix_group }}"
     recurse: true
   tags:
-    - source            
+    - source
+    
+- name: Install Zabbix bootstrap dependencies
+  ansible.builtin.dnf:
+    name:
+      - gettext
+      - gettext-devel
+    state: present
+  tags:
+    - packages                
