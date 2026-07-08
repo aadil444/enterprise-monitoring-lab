@@ -1,0 +1,18 @@
+---
+- name: Configure Zabbix build
+  ansible.builtin.command:
+    cmd: >
+      ./configure
+      --prefix={{ zabbix_install_prefix }}
+      --enable-server
+      --enable-agent
+      --with-postgresql
+      --with-net-snmp
+      --with-libcurl
+      --with-libxml2
+      --with-openssl
+      --with-libpcre2
+    chdir: "{{ zabbix_source_path }}"
+    creates: "{{ zabbix_source_path }}/config.status"
+  tags:
+    - configure

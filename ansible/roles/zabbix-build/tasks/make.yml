@@ -1,0 +1,7 @@
+---
+- name: Compile Zabbix source code
+  ansible.builtin.command:
+    cmd: make -j{{ ansible_processor_vcpus | default(2) }}
+    chdir: "{{ zabbix_source_path }}"
+  tags:
+    - make
