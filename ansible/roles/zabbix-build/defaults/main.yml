@@ -31,5 +31,5 @@ zabbix_build_packages:
   - libevent-devel
   - net-snmp-devel
   - openldap-devel
-  - pcre2-devel
+  - pcre-devel
   - libcurl-devel
