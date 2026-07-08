@@ -41,4 +41,13 @@
     version: "{{ zabbix_version }}"
     update: false
   tags:
-    - source        
+    - source
+
+- name: Set ownership on Zabbix source directory
+  ansible.builtin.file:
+    path: "{{ zabbix_source_path }}"
+    owner: "{{ zabbix_user }}"
+    group: "{{ zabbix_group }}"
+    recurse: true
+  tags:
+    - source            
