@@ -1,8 +1,28 @@
 ---
-# tasks file for roles/zabbix-build
-- name: Install Zabbix build dependencies
-  ansible.builtin.dnf:
-    name: "{{ zabbix_build_packages }}"
+- name: Create Zabbix group
+  ansible.builtin.group:
+    name: "{{ zabbix_group }}"
     state: present
   tags:
-    - packages
+    - user
+
+
+- name: Create Zabbix user
+  ansible.builtin.user:
+    name: "{{ zabbix_user }}"
+    group: "{{ zabbix_group }}"
+    shell: /sbin/nologin
+    system: true
+    create_home: false
+  tags:
+    - user
+
+- name: Create Zabbix source directory
+  ansible.builtin.file:
+    path: "{{ zabbix_source_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  tags:
+    - source    

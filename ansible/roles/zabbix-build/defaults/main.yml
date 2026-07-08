@@ -1,35 +1,12 @@
 ---
-# defaults file for roles/zabbix-build
-zabbix_build_packages:
+zabbix_version: "7.0.0"
 
-  - gcc
-  - gcc-c++
-  - make
-  - cmake
-  - git
-  - wget
-  - curl
-  - tar
-  - autoconf
-  - automake
-  - libtool
+zabbix_user: zabbix
 
-  # PostgreSQL development
-  - libpq-devel
+zabbix_group: zabbix
 
-  # Encryption
-  - openssl-devel
+zabbix_source_dir: /usr/local/src
 
-  # Compression
-  - zlib-devel
-  - libxml2-devel
-  - libevent-devel
+zabbix_source_path: "{{ zabbix_source_dir }}/zabbix-{{ zabbix_version }}"
 
-  # SNMP
-  - net-snmp-devel
-
-  # LDAP
-  - openldap-devel
-
-  # PCRE
-  - pcre2-devel
+zabbix_install_prefix: /usr/local
