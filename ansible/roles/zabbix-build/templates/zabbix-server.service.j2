@@ -1,0 +1,15 @@
+[Unit]
+Description=Zabbix Server
+After=network.target
+
+[Service]
+Type=simple
+User={{ zabbix_user }}
+Group={{ zabbix_group }}
+
+ExecStart={{ zabbix_install_prefix }}/sbin/zabbix_server -f -c /etc/zabbix/zabbix_server.conf
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

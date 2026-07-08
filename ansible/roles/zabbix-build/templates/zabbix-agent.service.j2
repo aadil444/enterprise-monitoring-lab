@@ -1,0 +1,15 @@
+[Unit]
+Description=Zabbix Agent
+After=network.target
+
+[Service]
+Type=simple
+User={{ zabbix_user }}
+Group={{ zabbix_group }}
+
+ExecStart={{ zabbix_install_prefix }}/sbin/zabbix_agentd -f -c /etc/zabbix/zabbix_agentd.conf
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

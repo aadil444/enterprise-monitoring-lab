@@ -97,4 +97,10 @@
   ansible.builtin.include_tasks:
     file: install.yml
   tags:
-    - install    
+    - install 
+
+- name: Include Zabbix service tasks
+  ansible.builtin.include_tasks:
+    file: service.yml
+  tags:
+    - service       

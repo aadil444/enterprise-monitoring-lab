@@ -1,0 +1,41 @@
+---
+- name: Deploy Zabbix server systemd service
+  ansible.builtin.template:
+    src: zabbix-server.service.j2
+    dest: /etc/systemd/system/zabbix-server.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+  tags:
+    - service
+
+
+- name: Deploy Zabbix agent systemd service
+  ansible.builtin.template:
+    src: zabbix-agent.service.j2
+    dest: /etc/systemd/system/zabbix-agent.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload systemd
+  tags:
+    - service
+
+
+- name: Enable Zabbix server service
+  ansible.builtin.service:
+    name: zabbix-server
+    enabled: true
+  tags:
+    - service
+
+
+- name: Enable Zabbix agent service
+  ansible.builtin.service:
+    name: zabbix-agent
+    enabled: true
+  tags:
+    - service
