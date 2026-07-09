@@ -11,7 +11,6 @@
   tags:
     - service
 
-
 - name: Deploy Zabbix agent systemd service
   ansible.builtin.template:
     src: zabbix-agent.service.j2
@@ -24,18 +23,18 @@
   tags:
     - service
 
-
-- name: Enable Zabbix server service
+- name: Enable and start Zabbix server service
   ansible.builtin.service:
     name: zabbix-server
     enabled: true
+    state: started
   tags:
     - service
 
-
-- name: Enable Zabbix agent service
+- name: Enable and start Zabbix agent service
   ansible.builtin.service:
     name: zabbix-agent
     enabled: true
+    state: started
   tags:
     - service
