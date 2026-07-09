@@ -1,2 +1,37 @@
 ---
 # tasks file for postgresql-config
+- name: Ensure PostgreSQL listens on all interfaces
+  ansible.builtin.lineinfile:
+    path: /var/lib/pgsql/17/data/postgresql.conf
+    regexp: '^#?listen_addresses'
+    line: "listen_addresses = '*'"
+    state: present
+  become: true
+
+- name: Allow mon01 and db01 in pg_hba.conf
+  ansible.builtin.lineinfile:
+    path: /var/lib/pgsql/17/data/pg_hba.conf
+    line: "{{ item }}"
+    state: present
+  loop:
+    - "host    zabbix    zabbix    192.168.56.30/32    md5"
+    - "host    zabbix    zabbix    192.168.56.20/32    md5"
+  become: true
+
+- name: Reload PostgreSQL
+  ansible.builtin.service:
+    name: postgresql-17
+    state: restarted
+  become: true
+
+- name: Open PostgreSQL port in firewall
+  ansible.builtin.firewalld:
+    port: 5432/tcp
+    permanent: yes
+    state: enabled
+  become: true
+
+- name: Reload firewall
+  ansible.builtin.command:
+    cmd: firewall-cmd --reload
+  become: true
