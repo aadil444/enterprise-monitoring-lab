@@ -1,4 +1,22 @@
 ---
+- name: Ensure Zabbix server binary is owned by zabbix
+  ansible.builtin.file:
+    path: /usr/local/sbin/zabbix_server
+    owner: "{{ zabbix_user }}"
+    group: "{{ zabbix_group }}"
+    mode: "0755"
+  tags:
+    - service
+
+- name: Ensure Zabbix agent binary is owned by zabbix
+  ansible.builtin.file:
+    path: /usr/local/sbin/zabbix_agentd
+    owner: "{{ zabbix_user }}"
+    group: "{{ zabbix_group }}"
+    mode: "0755"
+  tags:
+    - service
+
 - name: Deploy Zabbix server systemd service
   ansible.builtin.template:
     src: zabbix-server.service.j2
@@ -20,6 +38,12 @@
     mode: "0644"
   notify:
     - Reload systemd
+  tags:
+    - service
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
   tags:
     - service
 
