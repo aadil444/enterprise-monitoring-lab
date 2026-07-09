@@ -121,4 +121,9 @@
   ansible.builtin.include_tasks:
     file: service.yml
   tags:
-    - service           
+    - service   
+
+- name: Create Zabbix host via API
+  ansible.builtin.include_tasks: api-host.yml
+  tags:
+    - config            
