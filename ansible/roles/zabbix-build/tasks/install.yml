@@ -4,29 +4,24 @@
     cmd: make install
     chdir: "{{ zabbix_source_path }}"
     creates: "{{ zabbix_install_prefix }}/sbin/zabbix_server"
+  become: true
   tags:
     - install
 
-- name: Create Zabbix runtime directories
+- name: Ensure Zabbix runtime directories exist
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
     owner: "{{ zabbix_user }}"
     group: "{{ zabbix_group }}"
     mode: "0755"
+    recurse: true
   loop:
     - /etc/zabbix
     - /var/log/zabbix
     - /var/lib/zabbix
+    - /run/zabbix
+  notify:
+    - Reload systemd
   tags:
     - install
-
-- name: Create Zabbix run directory
-  ansible.builtin.file:
-    path: /run/zabbix
-    state: directory
-    owner: "{{ zabbix_user }}"
-    group: "{{ zabbix_group }}"
-    mode: "0755"
-  tags:
-    - install       
