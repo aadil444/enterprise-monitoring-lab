@@ -1,4 +1,13 @@
 ---
+- name: Install PostgreSQL client
+  ansible.builtin.dnf:
+    name:
+      - postgresql
+      - postgresql-contrib
+    state: present
+  tags:
+    - database
+
 - name: Generate Zabbix database schema
   ansible.builtin.command:
     cmd: make dbschema
