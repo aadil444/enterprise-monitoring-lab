@@ -15,3 +15,13 @@
 
   tags:
     - config
+
+- name: Allow unsupported PostgreSQL versions in Zabbix
+  ansible.builtin.lineinfile:
+    path: /etc/zabbix/zabbix_server.conf
+    regexp: '^#?AllowUnsupportedDBVersions'
+    line: 'AllowUnsupportedDBVersions=1'
+  notify:
+    - Reload systemd
+  tags:
+    - config    
