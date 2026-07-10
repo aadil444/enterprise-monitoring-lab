@@ -4,3 +4,8 @@
   include_tasks: install.yml
   tags:
     - web
+
+- name: Deploy Zabbix frontend files
+  ansible.builtin.include_tasks: deploy-frontend.yml
+  tags:
+    - web    
