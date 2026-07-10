@@ -11,5 +11,7 @@
   become: true
   roles:
     - role: zabbix-web
+      vars:
+        zabbix_source_path: /usr/local/src/zabbix-7.0.0
       tags:
         - web  
