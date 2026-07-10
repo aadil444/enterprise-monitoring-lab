@@ -1,3 +1,4 @@
+---
 - name: Create Zabbix host via API
   community.zabbix.zabbix_host:
     server_url: http://192.168.56.30/zabbix/api_jsonrpc.php
@@ -5,7 +6,7 @@
     login_password: zabbix
     host_name: mon01
     visible_name: mon01
-    groups:
+    host_groups:          # <-- changed from "groups"
       - Templates/Servers
     interfaces:
       - type: 1
