@@ -1,5 +1,8 @@
-- name: Create Zabbix host via API (new syntax)
+- name: Create Zabbix host via API
   community.zabbix.zabbix_host:
+    server_url: http://192.168.56.30/zabbix/api_jsonrpc.php
+    login_user: Admin
+    login_password: zabbix
     host_name: mon01
     visible_name: mon01
     host_groups:
@@ -11,8 +14,6 @@
         ip: 192.168.56.30
         dns: ''
         port: 10050
-    http_login_user: Admin
-    http_login_password: zabbix
     state: present
   tags:
     - config
