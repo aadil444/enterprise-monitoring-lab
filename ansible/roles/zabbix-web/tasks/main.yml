@@ -1,0 +1,6 @@
+---
+# Main entry for zabbix-web role
+- name: Include web installation tasks
+  include_tasks: install.yml
+  tags:
+    - web

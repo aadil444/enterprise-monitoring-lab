@@ -25,7 +25,7 @@
   tags:
     - web
 
-- name: Enable and start Nginx service
+- name: Enable and start Nginx
   ansible.builtin.service:
     name: nginx
     enabled: true
@@ -34,7 +34,7 @@
   tags:
     - web
 
-- name: Enable and start PHP-FPM service
+- name: Enable and start PHP-FPM
   ansible.builtin.service:
     name: php-fpm
     enabled: true
