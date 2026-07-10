@@ -5,7 +5,7 @@
     login_password: zabbix
     host_name: mon01
     visible_name: mon01
-    host_groups:
+    groups:
       - Templates/Servers
     interfaces:
       - type: 1
