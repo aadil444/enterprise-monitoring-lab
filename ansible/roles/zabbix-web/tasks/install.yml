@@ -1,0 +1,46 @@
+---
+- name: Install Nginx and PHP packages
+  ansible.builtin.dnf:
+    name:
+      - nginx
+      - php
+      - php-fpm
+      - php-cli
+      - php-mbstring
+      - php-xml
+      - php-gd
+      - php-bcmath
+      - php-ldap
+      - php-pdo
+      - php-pgsql
+    state: present
+  tags:
+    - web
+
+- name: Enable and start Nginx
+  ansible.builtin.service:
+    name: nginx
+    enabled: true
+    state: started
+  tags:
+    - web
+
+- name: Enable and start PHP-FPM
+  ansible.builtin.service:
+    name: php-fpm
+    enabled: true
+    state: started
+  tags:
+    - web
+
+- name: Deploy Nginx config for Zabbix
+  ansible.builtin.template:
+    src: zabbix.conf.j2
+    dest: /etc/nginx/conf.d/zabbix.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload Nginx
+  tags:
+    - web    

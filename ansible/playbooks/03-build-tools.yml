@@ -5,3 +5,9 @@
 
   roles:
     - zabbix-build
+
+- name: Deploy Zabbix Web UI
+  hosts: monitoring
+  become: true
+  roles:
+    - zabbix-web    

@@ -18,3 +18,11 @@
     state: present
   tags:
     - config
+
+- name: Install Python Zabbix API library
+  ansible.builtin.pip:
+    name: zabbix-api
+    state: present
+    executable: /usr/bin/pip3
+  tags:
+    - config    
