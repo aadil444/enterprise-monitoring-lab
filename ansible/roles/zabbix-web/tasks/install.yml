@@ -25,6 +25,12 @@
   tags:
     - web
 
+- name: Refresh DNF metadata
+  ansible.builtin.dnf:
+    update_cache: yes
+  tags:
+    - web    
+
 - name: Enable and start PHP-FPM
   ansible.builtin.service:
     name: php-fpm
