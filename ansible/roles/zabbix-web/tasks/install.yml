@@ -1,4 +1,11 @@
 ---
+- name: Refresh DNF metadata
+  ansible.builtin.dnf:
+    update_cache: yes
+  become: true
+  tags:
+    - web
+
 - name: Install Nginx and PHP packages
   ansible.builtin.dnf:
     name:
@@ -14,28 +21,25 @@
       - php-pdo
       - php-pgsql
     state: present
+  become: true
   tags:
     - web
 
-- name: Enable and start Nginx
+- name: Enable and start Nginx service
   ansible.builtin.service:
     name: nginx
     enabled: true
     state: started
+  become: true
   tags:
     - web
 
-- name: Refresh DNF metadata
-  ansible.builtin.dnf:
-    update_cache: yes
-  tags:
-    - web    
-
-- name: Enable and start PHP-FPM
+- name: Enable and start PHP-FPM service
   ansible.builtin.service:
     name: php-fpm
     enabled: true
     state: started
+  become: true
   tags:
     - web
 
@@ -48,5 +52,6 @@
     mode: "0644"
   notify:
     - Reload Nginx
+  become: true
   tags:
     - web
