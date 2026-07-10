@@ -1,4 +1,10 @@
 ---
+- name: Include install tasks
+  include_tasks: install.yml
+  tags:
+    - web
+
+    
 - name: Reload Nginx
   ansible.builtin.service:
     name: nginx
