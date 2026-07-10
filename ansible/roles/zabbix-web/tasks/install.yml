@@ -32,3 +32,15 @@
     state: started
   tags:
     - web
+
+- name: Deploy Nginx config for Zabbix
+  ansible.builtin.template:
+    src: zabbix.conf.j2
+    dest: /etc/nginx/conf.d/zabbix.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload Nginx
+  tags:
+    - web
